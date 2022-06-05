@@ -291,7 +291,8 @@ We check the percentage of rows with at least 1 missing value for each class:
 for (class in unique(Soybean$Class)) {
   print(
     paste0(class,": ",
-      round(sum(is.na(Soybean[Soybean$Class==class,]))/nrow(Soybean[Soybean$Class==class,]),2),
+      round(sum(apply(is.na(Soybean[Soybean$Class==class,]),1,any))/
+              nrow(Soybean[Soybean$Class==class,])*100,2),
       "%"
     )
   )
