@@ -361,6 +361,42 @@ For the simple exponential smoothing model, the forecast variance is $\sigma_{h}
 
 \newpage
 
+# HA 7.2
+
+Write your own function to implement simple exponential smoothing. The function should take arguments `y` (the time series), `alpha` (the smoothing parameter $\alpha$) and `level` (the initial level $\iota_0$). It should return the forecast of the next observation in the series. Does it give the same forecast as `ses`?
+
+```{r}
+ses_cal <- function(pars = c(alpha, level), ts) {
+  ts_df <- data.frame(Time=c(0), Observation=c(0.0), Level=c(0.0), Forecast=c(0.0))
+  l_t <- pars[2]
+  alpha <- pars[1]
+  for (t in 1:length(ts)) {
+    ts_df[t,"Time"] <- t
+    ts_df[t,"Observation"] <- ts[t]
+    ts_df[t,"Level"] <- alpha*ts_df[t,"Observation"] + (1-alpha)*l_t
+    ts_df[t,"Forecast"] <- l_t
+    l_t <- ts_df[t,"Level"]
+  }
+  return(l_t) #The forecast from a ses model is simply the last level
+}
+```
+
+Using the $\alpha$ and $\iota_0$ from the model produced by the ses function, the forecast of the next observation from our own function is
+
+```{r}
+ses_cal(c(ses_pigs$model$par[1], ses_pigs$model$par[2]),pigs)
+```
+
+The forecast of the next observation from the model produced by the ses function is
+
+```{r}
+ses_pigs$mean[1]
+```
+
+The two functions produce identical forecast
+
+\newpage
+
 # HA 7.3
 
 Modify your function from the previous exercise to return the sum of squared errors rather than the forecast of the next observation. Then use the `optim()` function to find the optimal values of $\alpha$ and $\iota_0$. Do you get the same values as the `ses()` function?
