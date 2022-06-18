@@ -3,14 +3,15 @@ title: "DATA_624_HW1"
 author: "Group 4: Melvin Matanos, Claire Meyer, Chinedu Onyeka, Euclid Zhang, Jie Zou"
 date: "6/1/2022"
 output:
-  word_document: default
+  word_document:
+    reference_docx: Style.docx
   html_document:
     df_print: paged
 ---
 
 \newpage
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
 library(fpp2)
 ```
 
@@ -350,12 +351,16 @@ ses_pigs$mean[1] + 1.96*s
 ses_pigs$mean[1] - 1.96*s
 ```
 
+The 95% prediction interval for the first forecast is (78679.97, 118952.8)
+
 ## c. Compare your interval with the interval produced by R.
 
 ```{r}
 ses_pigs$upper[1, "95%"]
 ses_pigs$lower[1, "95%"]
 ```
+The interval produced by R is (78611.97, 119020.8)  
+
 The calculated interval using the standard deviation of the residuals is slightly different from the interval produced by R.
 For the simple exponential smoothing model, the forecast variance is $\sigma_{h}^{2}=\sigma^{2}[1+\alpha^{2}(h-1))]$ where $\sigma^{2}$ is the variance of the residuals. Hence, the computed results are different.
 
@@ -454,6 +459,7 @@ Since the autocorrelations in all figures are within their confidence intervals,
 For white noise series, we expect the autocorrelations to be close to zero and within $\pm 2/\sqrt{T}$ where $T$ is the length of the time series. Since the lengths of the three series are significantly different, the critical values are also significantly different. 
 
 For white noise series, the data points are considered independent and random. Though they are random, there may be still some notable correlation for some data points just by chance. As the number of data points increase, the effect of the correlated data points diminish. Therefore, the autocorrelations are different in each figure because of the size of the data but in fact they all refer to white noise.
+
 \newpage
 
 # HA 8.2
@@ -507,7 +513,7 @@ autoplot(y, series = "phi=0.6") +
   autolayer(ts_generator_AR(0.9), series = paste0("phi=",0.9))
 ```
 
-For higher $\phi_1$, the trend in the series is stronger since the new value depends more on the last value. 
+For higher $\phi_1$, the fluctuation in the series is stronger since the new value depends more on the last value. 
 
 ## c. Write your own code to generate data from an MA(1) model with $\theta_1 = 0.6$ and $\sigma^2 = 1$.
 
@@ -533,7 +539,7 @@ autoplot(y, series = "theta=0.6") +
   autolayer(ts_generator_MA(0.9), series = paste0("theta=",0.9))
 ```
 
-The higher $\theta_1$, the higher the fluctuation is the time series. The new value depends more on the past errors.
+The higher $\theta_1$, the higher the variance is in the time series. The new value depends more on the past errors.
 
 ## e. Generate data from an ARMA(1,1) model with $\phi_1=0.6$, $\theta_1=0.6$ and $\sigma^2=1$.
 
@@ -594,20 +600,20 @@ autoplot(austa)
 auto.arima(austa)
 ```
 
-An ARIMA(0,1,1) with drift is select. $\theta_1=0.3006$ and $\mu=0.1735$.
+An ARIMA(0,1,1) with drift is select. $\theta_1=0.3006$ and $\mu=0.1735$. The model suggests a first order differencing with a constant drift, which implies there is a straight-line trend in the time series.
 
 ```{r}
 austa_arima <- forecast(auto.arima(austa), h = 10)
 checkresiduals(austa_arima)
 ```
 
-The residuals are independent with mean near 0. The residuals look like white noise.
+The residuals are independent with mean near 0. The residuals look like white noise. The Ljung-Box test has a p-value of 0.8067, implies that it is very **unlikely** that there are autocorrelations in the residuals.
 
 ```{r}
 autoplot(austa_arima)
 ```
 
-The forecasts of the next 10 periods look plausible with an increasing trend.
+The forecasts of the next 10 periods look plausible with an increasing trend, which is consistent with the model output.
 
 ## b. Plot forecasts from an ARIMA(0,1,1) model with no drift and compare these to part (a). Remove the MA term and plot again.
 
