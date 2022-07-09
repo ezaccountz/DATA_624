@@ -1,0 +1,16 @@
+Model Name,Model Type,Tuning Parameter,Tuning Parameter Description
+pls_model,partial least squares,ncomp,number of components in the model
+knn_model,k-nearest neighbors,k,number of neighbors used for each prediction
+svm_model,support-vector machine,sigma,width of the decision boundary
+svm_model,support-vector machine,C,size of the penalty of misclassifications
+nnet_model,neural network,size,number of units (components) in hidden layer
+nnet_model,neural network,decay,regularization parameter to lower overfitting
+mars_model,multivariate adaptive regression splines,degree,maximum degree of interaction (between predictors)
+mars_model,multivariate adaptive regression splines,nprune,maximum number of terms in the pruned model
+tree_model,classification and regression trees,maxdepth,maximum depth of the tree
+rf_model,random forests,mtry,number of predictors sampled in each tree
+boost_model,gradient boosting,n.tees,the number of trees (boosting iterations)
+boost_model,gradient boosting,interaction.depth,the number of splits in each tree
+boost_model,gradient boosting,shrinkage,the porportion of data learned in each tree
+cubist_model,cubist,committees,the numebr of committees (boosting iterations)
+cubist_model,cubist,neighbors,the number of neighbors used to adjust the prediction
